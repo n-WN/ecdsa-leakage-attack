@@ -7,7 +7,7 @@ This repository contains Python source code for attacking ECDSA with nonce leaka
 In this [paper](https://eprint.iacr.org/2024/296), we aim to give a solution to an open question: Can lattice-based attacks be enhanced by utilizing more samples? Using this repository, we can break 160-bit ECDSA with 1-bit leakage using approximately $2^{25}$ ECDSA samples. In addition, our new algorithms
 for solving the HNP are extended to address the case of erroneous input, increasing the robustness of lattice-based attacks.
 
-> Multiple leaks can also use this Repo, thanks to the work of the original authors
+> Multi-bit leakage can also be used to recover ECDSA keys using the code in this repo. Thanks to the original authors for their work.
 
 ## Version Information
 
@@ -74,9 +74,9 @@ NotImplementedError: Type '<class 'gmpy2.mpz'>' not supported
 
 ### Diff
 
-https://github.com/JinghuiWW/ecdsa-leakage-attack/blob/a1eaf2627b6502cbfa0e4094d0f3b3384d363724/HNPSolver.py#L131
+[self.lattice[i, i] #L131](https://github.com/JinghuiWW/ecdsa-leakage-attack/blob/a1eaf2627b6502cbfa0e4094d0f3b3384d363724/HNPSolver.py#L131)
 
-https://github.com/JinghuiWW/ecdsa-leakage-attack/blob/a1eaf2627b6502cbfa0e4094d0f3b3384d363724/HNPSolver.py#L149
+[self.lattice[i, i] #L149](https://github.com/JinghuiWW/ecdsa-leakage-attack/blob/a1eaf2627b6502cbfa0e4094d0f3b3384d363724/HNPSolver.py#L149)
 
 ``` diff
 -       self.lattice[i, i] = self.HNP_instance.q
