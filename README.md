@@ -7,6 +7,82 @@ This repository contains Python source code for attacking ECDSA with nonce leaka
 In this [paper](https://eprint.iacr.org/2024/296), we aim to give a solution to an open question: Can lattice-based attacks be enhanced by utilizing more samples? Using this repository, we can break 160-bit ECDSA with 1-bit leakage using approximately $2^{25}$ ECDSA samples. In addition, our new algorithms
 for solving the HNP are extended to address the case of erroneous input, increasing the robustness of lattice-based attacks.
 
+> Multiple leaks can also use this Repo, thanks to the work of the original authors
+
+## Version Information
+
+- sage 10.4 (Python 3.12.4 | ARM)
+- fplll 5.4.5
+- fpylll 0.6.0
+- gmpy2 2.2.0a1
+
+## Quick Start
+
+> Why use Sage because it integrates fplll, fpylll
+
+``` shell
+sage solveECDSAfromMSB.py -n 256 -s 4 -m1 $leak_count -m4 0 -t 16 -f1 lines.txt -f2 leak.txt -curve secp256k1 2
+```
+
+### input files format
+
+#### `lines.txt`
+
+```
+[
+    "e51cc9ac2d8bb2bcb5ad072d0bee5dfe97c061a657f6d1a9a2712a9fd48b5f6e f3d30f851d496a8b041c650c215520fb6cede263990dd7d07518f70ea740978ceeaa4eae256b288389a39ff5d13e9d775c9ded4515daeeb0775913f2f8418402",
+    "e51cc9ac2d8bb2bcb5ad072d0bee5dfe97c061a657f6d1a9a2712a9fd48b5f6e 7b8aaa0a1e04e804b3e6fa964a160a0c5531ea5e197c891aa36a4a08f65be8b199e7b4303aa53b7a0d76bfd6eaf612439707b4f915d9428c6bd3043c716c3416",
+    
+    ...
+
+    "e51cc9ac2d8bb2bcb5ad072d0bee5dfe97c061a657f6d1a9a2712a9fd48b5f6e 515456c53c9e3333326aa1f643c238dc882d90d6cadf4e7125a98f55a878f3bc829c40e3f1d42387c0fb99693a02c872c1020570299ac0ae4974540f7922e84a"
+]
+
+```
+
+---
+
+#### `leak.txt`
+
+``` python
+[1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 1, 1, 1, 0, 0, 1]
+
+```
+
+## Fix
+
+- Fix the bug in the `ecdsa-leakage-attack/HNPSolver.py` file. The error message is as follows:
+
+``` python
+Traceback (most recent call last):
+  File "/ecdsa-leakage-attack/solveECDSAfromMSB.py", line 51, in <module>
+    recovered_sk = Solver.recoverKey()
+                   ^^^^^^^^^^^^^^^^^^^
+  File "/ecdsa-leakage-attack/ECDSASolver.py", line 215, in recoverKey
+    Solver.solve("eliminateAlpha")
+  File "/ecdsa-leakage-attack/HNPSolver.py", line 184, in solve
+    self.constructLatticeEliminateAlpha()
+  File "/ecdsa-leakage-attack/HNPSolver.py", line 131, in constructLatticeEliminateAlpha
+    self.lattice[i, i] = self.HNP_instance.q
+    ~~~~~~~~~~~~^^^^^^
+  File "src/fpylll/fplll/integer_matrix.pyx", line 960, in fpylll.fplll.integer_matrix.IntegerMatrix.__setitem__
+  File "src/fpylll/fplll/integer_matrix.pyx", line 917, in fpylll.fplll.integer_matrix.IntegerMatrix._set
+  File "src/fpylll/io.pyx", line 35, in fpylll.io.assign_Z_NR_mpz
+  File "src/fpylll/io.pyx", line 62, in fpylll.io.assign_mpz
+NotImplementedError: Type '<class 'gmpy2.mpz'>' not supported
+```
+
+### Diff
+
+[self.lattice[i, i] #L131](https://github.com/JinghuiWW/ecdsa-leakage-attack/blob/a1eaf2627b6502cbfa0e4094d0f3b3384d363724/HNPSolver.py#L131)
+
+[self.lattice[i, i] #L149](https://github.com/JinghuiWW/ecdsa-leakage-attack/blob/a1eaf2627b6502cbfa0e4094d0f3b3384d363724/HNPSolver.py#L149)
+
+``` diff
+-       self.lattice[i, i] = self.HNP_instance.q
++       self.lattice[i, i] = int(self.HNP_instance.q)
+```
+
 ## Key Recovery of ECDSA with Nonce Leakage
 You can perform the attack on an instance using multiple CPU cores. For example:
 ``` shell

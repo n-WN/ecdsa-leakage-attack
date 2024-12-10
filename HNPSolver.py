@@ -128,7 +128,7 @@ class HNPSolver:
         self.lattice = IntegerMatrix(self.num_lattice + 1, self.num_lattice + 1)
 
         for i in range(self.num_lattice - 1):
-            self.lattice[i, i] = self.HNP_instance.q
+            self.lattice[i, i] = int(self.HNP_instance.q)
 
         for j in range(1, self.num_lattice):
             self.t_lattice_replaced[j - 1] = int(self.t0_inverse * self.t_lattice[j] % self.HNP_instance.q)
@@ -146,7 +146,7 @@ class HNPSolver:
         self.lattice = IntegerMatrix(self.num_lattice + 1, self.num_lattice + 1)
 
         for i in range(self.num_lattice - 1):
-            self.lattice[i, i] = self.HNP_instance.q
+            self.lattice[i, i] = int(self.HNP_instance.q)
 
         for j in range(1, self.num_lattice):
             self.t_lattice_replaced[j - 1] = mod(self.t0_inverse * self.t_lattice[j], self.HNP_instance.q)
