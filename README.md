@@ -74,9 +74,9 @@ NotImplementedError: Type '<class 'gmpy2.mpz'>' not supported
 
 ### Diff
 
-[self.lattice[i, i] #L131](https://github.com/JinghuiWW/ecdsa-leakage-attack/blob/a1eaf2627b6502cbfa0e4094d0f3b3384d363724/HNPSolver.py#L131)
+https://github.com/JinghuiWW/ecdsa-leakage-attack/blob/a1eaf2627b6502cbfa0e4094d0f3b3384d363724/HNPSolver.py#L131
 
-[self.lattice[i, i] #L149](https://github.com/JinghuiWW/ecdsa-leakage-attack/blob/a1eaf2627b6502cbfa0e4094d0f3b3384d363724/HNPSolver.py#L149)
+https://github.com/JinghuiWW/ecdsa-leakage-attack/blob/a1eaf2627b6502cbfa0e4094d0f3b3384d363724/HNPSolver.py#L149
 
 ``` diff
 -       self.lattice[i, i] = self.HNP_instance.q
